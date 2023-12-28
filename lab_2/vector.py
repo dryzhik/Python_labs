@@ -43,7 +43,7 @@ class Vector:
         return sqrt(self.x ** 2 + self.y ** 2)
 
     def __str__(self):
-        return "<{}; {}>".format(self.x, self.y)
+        return f"<{self.x}; {self.y}>"
 
     def __repr__(self):
         return str(self)
