@@ -1,9 +1,18 @@
 from aiohttp import web
 import json
+from datetime import datetime
 
 app = web.Application()
 
 lab_schedule = {}
+
+
+async def validate_date(date_str):
+    try:
+        datetime.strptime(date_str, '%d.%m.%Y')
+        return True
+    except ValueError:
+        return False
 
 
 async def create_lab(request):
@@ -20,6 +29,9 @@ async def create_lab(request):
         if lab_name in lab_schedule:
             return web.json_response({'error': 'Lab with this name already exists'}, status=400)
 
+        if not await validate_date(deadline):
+            return web.json_response({'error': 'Invalid date format. Use dd.mm.yyyy'}, status=400)
+
         lab_schedule[lab_name] = {
             'name': lab_name,
             'deadline': deadline,
@@ -28,7 +40,8 @@ async def create_lab(request):
         }
 
         url = f'http://{request.host}/labs/{lab_name}'
-        return web.json_response({'url': url})
+        headers = {'Location': url}
+        return web.json_response({'url': url}, headers=headers, status=201)
     except json.JSONDecodeError:
         return web.json_response({'error': 'Invalid JSON format'}, status=400)
 
@@ -44,6 +57,10 @@ async def update_lab(request):
         deadline = data.get('deadline')
         description = data.get('description', '')
         students = data.get('students', [])
+
+        if not await validate_date(deadline):
+            return web.json_response({'error': 'Invalid date format. Use dd.mm.yyyy'}, status=400)
+
         lab_schedule[lab_name]['deadline'] = deadline
         lab_schedule[lab_name]['description'] = description
         lab_schedule[lab_name]['students'] = students
