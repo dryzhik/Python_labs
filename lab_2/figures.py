@@ -3,10 +3,10 @@ from math import sqrt, pi
 
 
 class Figure(ABC):
+    _type = "Figure"
 
-    def __init__(self, type):
-        self.type = type
-        print(self.type)
+    def type(self):
+        return self._type
 
     @abstractmethod
     def square(self):
@@ -16,16 +16,17 @@ class Figure(ABC):
 class Triangle(Figure):
 
     def __init__(self, side1, side2, side3):
+        self._type = "Triangle"
+        
         if side1 < 0 or side2 < 0 or side3 < 0:
             raise Exception("Sides must be positive")
         if (side1 + side2) < side3 or (side2 + side3) < side1 or (side1 + side3) < side2:
             raise Exception("Such triangle doesn't exist")
 
-        __type = "Triangle"
         self.side1 = side1
         self.side2 = side2
         self.side3 = side3
-        super().__init__(__type)
+        super().__init__()
 
     def square(self):
         p = (self.side1 + self.side2 + self.side3) * 0.5
@@ -36,13 +37,14 @@ class Triangle(Figure):
 class Rectangle(Figure):
 
     def __init__(self, height, width):
+        self._type = "Rectangle"
+        
         if height < 0 or width < 0:
             raise Exception("Sides must be positive")
 
-        __type = "Rectangle"
         self.height = height
         self.width = width
-        super().__init__(__type)
+        super().__init__()
 
     def square(self):
         s = self.width * self.width
@@ -52,12 +54,13 @@ class Rectangle(Figure):
 class Circle(Figure):
 
     def __init__(self, radius):
+        self._type = "Circle"
+        
         if radius < 0:
             raise Exception("Radius must be positive")
 
-        __type = "Circle"
         self.radius = radius
-        super().__init__(__type)
+        super().__init__()
 
     def square(self):
         s = pi * self.radius ** 2
@@ -66,10 +69,13 @@ class Circle(Figure):
 
 if __name__ == "__main__":
     rectangle = Rectangle(1, 2)
+    print(rectangle.type())
     print("Площадь: " + str(rectangle.square()))
     print("--------------------------------------")
     triangle = Triangle(3, 4, 5)
+    print(triangle.type())
     print("Площадь: " + str(triangle.square()))
     print("--------------------------------------")
     circle = Circle(6)
+    print(circle.type())
     print("Площадь: " + str(circle.square()))
