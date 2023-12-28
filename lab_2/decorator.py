@@ -7,6 +7,14 @@ class BaseDecorator(ABC):
         self.function = function
         self.history = list()
         self.__name__ = self.function.__name__
+        self.execution_time = 0
+
+    def __call__(self, *args):
+        self.decorate(*args)
+        self.keep_history(time.localtime(), *args)
+
+     def decorate(self, *args):
+        pass
 
     def keep_history(self, call_time, *args):
         format_call_time = time.strftime("%H:%M:%S", call_time)
@@ -16,8 +24,7 @@ class BaseDecorator(ABC):
 
 
 class ExecutionTime(BaseDecorator):
-    def __call__(self, *args):
-        call_time = time.localtime()
+    def decorate(self, *args):
         start_time = time.perf_counter()
         func = self.function(*args)
         end_time = time.perf_counter()
@@ -25,21 +32,17 @@ class ExecutionTime(BaseDecorator):
 
         print("Время выполнения:", self.execution_time)
 
-        self.keep_history(call_time, *args)
-
         return func
 
 
 class HtmlExecutionTime(BaseDecorator):
-    def __call__(self, *args):
-        call_time = time.localtime()
+     def decorate(self, *args):
         func = self.function(*args)
         execution_time = self.function.execution_time
 
         print(f"<html><body>{execution_time}</body></html>")
-
-        self.keep_history(call_time, *args)
         print("------------------------------------")
+
         return func
 
 
