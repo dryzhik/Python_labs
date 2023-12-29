@@ -26,7 +26,6 @@ class Triangle(Figure):
         self.side1 = side1
         self.side2 = side2
         self.side3 = side3
-        super().__init__()
 
     def square(self):
         p = (self.side1 + self.side2 + self.side3) * 0.5
@@ -44,7 +43,6 @@ class Rectangle(Figure):
 
         self.height = height
         self.width = width
-        super().__init__()
 
     def square(self):
         s = self.width * self.width
@@ -60,7 +58,6 @@ class Circle(Figure):
             raise Exception("Radius must be positive")
 
         self.radius = radius
-        super().__init__()
 
     def square(self):
         s = pi * self.radius ** 2
