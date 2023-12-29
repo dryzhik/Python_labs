@@ -10,8 +10,9 @@ class BaseDecorator(ABC):
         self.execution_time = 0
 
     def __call__(self, *args):
-        self.decorate(*args)
+        res = self.decorate(*args)
         self.keep_history(time.localtime(), *args)
+        return res
 
     @abstractmethod
     def decorate(self, *args):
