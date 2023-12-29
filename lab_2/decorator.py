@@ -13,6 +13,7 @@ class BaseDecorator(ABC):
         self.decorate(*args)
         self.keep_history(time.localtime(), *args)
 
+    @abstractmethod
     def decorate(self, *args):
         pass
 
