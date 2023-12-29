@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 import time
 
 
@@ -33,15 +33,14 @@ class ExecutionTime(BaseDecorator):
 
         print("Время выполнения:", self.execution_time)
 
-        return func
+        return self.execution_time
 
 
 class HtmlExecutionTime(BaseDecorator):
      def decorate(self, *args):
         func = self.function(*args)
-        execution_time = self.function.execution_time
 
-        print(f"<html><body>{execution_time}</body></html>")
+        print(f"<html><body>{func}</body></html>")
         print("------------------------------------")
 
         return func
